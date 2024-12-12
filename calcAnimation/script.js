@@ -72,14 +72,6 @@ function displayNumberText(context) {
     context.fillText('121', 622, 378);
     context.fillText('122', 669, 378);
     context.fillText('123', 716, 378);
-    
-    // if(gameOver) {
-    //     context.textAlign = 'center';
-    //     context.fillStyle = 'black';
-    //     context.fillText('GAME OVER, try again!', canvas.width/2, 200);
-    //     context.fillStyle = 'white';
-    //     context.fillText('GAME OVER, try again!', canvas.width/2 + 2, 202);
-    // }
 }
 
 function animate2() {
@@ -93,12 +85,19 @@ function animate2() {
     ctx2.fillRect(685, 344, 3, 15);
     ctx2.fillRect(732, 344, 3, 15);
 
-    let position = Math.floor(gameFrame2/staggerFrames) % spriteAnimations[arrowState].loc.length;
-    frameY = spriteAnimations['rightArrow'].loc[position].y;
-    ctx2.drawImage(arrowImage, 0, frameY, spriteWidth, spriteHeight, 0, 0, CANVAS_WIDTH2, CANVAS_HEIGHT2);
+    let totalFrames = spriteAnimations['rightArrow'].loc.length;
+    let position = Math.floor(gameFrame2/staggerFrames);
 
-    gameFrame2++;
+    if(position < totalFrames) {
+        frameY = spriteAnimations['rightArrow'].loc[position].y;
+        ctx2.drawImage(arrowImage, 0, frameY, spriteWidth, spriteHeight, -43, 238 - spriteHeight, 440, 301);
+        gameFrame2++;
+        requestAnimationFrame(animate2);
+    } else {
+        frameY = spriteAnimations['rightArrow'].loc[5].y;
+        ctx2.drawImage(arrowImage, 0, frameY, spriteWidth, spriteHeight, -43, 238 - spriteHeight, 440, 301);
+    }
+    console.log(position)
     displayNumberText(ctx2);
-    requestAnimationFrame(animate2);
 };
 animate2();
