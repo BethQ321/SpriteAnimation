@@ -1,0 +1,234 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    text-align: center;
+    margin: 25px 0px;
+}
+
+#calculatorAll {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: flex-start;
+}
+
+#outerCalc {
+    padding: 20px;
+    border: 5px solid #626161;
+    border-radius: 10px;
+    background-color: #EFECAA;
+    box-shadow: 10px 10px 8px #888888;
+}
+
+#display {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+    align-items: center;
+    width: 230px;
+    height: 50px;
+    background-color: white;
+    border: 1px solid lightgray;
+    box-shadow: -1px -1px #888888;
+    margin-bottom: 20px;
+    font-size: 25px;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#corrections {
+    display: flex;
+    justify-content: space-between;
+    width: 230px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.corrButton {
+    width: 110px;
+    height: 50px;
+    background-color: #C392D2;
+}
+
+#backspace {
+    font-size: 30px;
+}
+
+#squareButtonContainer {
+    display: flex;
+    width: 230px;
+    height: 230px;
+}
+
+#numContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 180px;
+    height: 230px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.num {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: #F0C998;
+}
+
+#operContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 50px;
+    height: 230px;
+}
+
+.oper {
+    width: 50px;
+    height: 50px;
+    background-color: #A0DD85;
+}
+
+button {
+    font-size: 20px;
+    border: 2px solid #626161;
+    border-radius: 3px;
+    box-shadow: 3px 3px 2px #888888;
+}
+
+button:active {
+    transform: translateY(5px);
+    transform: translateX(3px);
+    box-shadow: 2px 2px 1px #888888;
+}
+
+#neg, #equals {
+    background-color: #E9A8A6;
+}
+
+#outerVisual {
+    border: 5px solid #626161;
+    border-radius: 10px;
+    width: 800px;
+    height: 80vh;
+    margin-left: 70px;
+}
+
+#equationVisual {
+    font-size: 50px;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#pictureVisual {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+#canvas {
+    /* border: 5px solid red; */
+    position: absolute;
+    width: 800px;
+    height: 400px;
+}
+
+#circleGroup {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.circle {
+    width: 150px;               /* Set width */
+    height: 150px;              /* Set height to the same as width for a circle */
+    background-color: #E9A8A6; /* Set background color */
+    border-radius: 50%;          /* Make it a circle */
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.countDisplay {
+    height: 30px;
+    font-size: 25px;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}
+
+.dotGroup {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    width: 140px;
+}
+
+.dot, .startDot {
+    width: 20px;               /* Set width */
+    height: 20px;              /* Set height to the same as width for a circle */
+    background-color: #C392D2; /* Set background color */
+    border: 1px solid black;
+    border-radius: 50%;          /* Make it a circle */
+    margin: 5px;
+}
+
+/* Classes fade-out and hidden are targeted at the startDots for division. 
+They begin with an opacity of 1 and then fade to 0. */
+
+.fade-out {
+    opacity: 1;
+}
+
+.fade-out.hidden {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+/* Classes fade-target and fade-in are targeted at the dots within the circles for division.
+They begin with an opacity of 0 and then fade to 1. */
+
+.fade-target {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+.fade-target.fade-in {
+    opacity: 1;
+}
+
+/* .dotGroup {
+    border: 2px solid black;
+} */
+
+.startDotGroup {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px;
+    width: 320px;
+}

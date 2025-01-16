@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Calculator</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://kit.fontawesome.com/915416ef09.js" crossorigin="anonymous"></script>
+    <script src="addition.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <h1>Visual Calculator</h1>
+    <div id="calculatorAll">
+    <div id="outerCalc">
+        <div id="display"></div>
+        <div id="corrections">
+            <button id="clear" class="corrButton" onclick="readClear()">CLEAR</button>
+            <button id="backspace" class="corrButton" onclick="readBackspace()"><i class="fa-solid fa-delete-left"></i></button>
+        </div>
+        <div id="squareButtonContainer">
+            <div id="numContainer">
+                <div class="row">
+                    <button id="7" class="num" onclick="readNum(7)">7</button>
+                    <button id="8" class="num" onclick="readNum(8)">8</button>
+                    <button id="9" class="num" onclick="readNum(9)">9</button>
+                </div>
+                <div class="row">
+                    <button id="4" class="num" onclick="readNum(4)">4</button>
+                    <button id="5" class="num" onclick="readNum(5)">5</button>
+                    <button id="6" class="num" onclick="readNum(6)">6</button>
+                </div>
+                <div class="row">
+                    <button id="1" class="num" onclick="readNum(1)">1</button>
+                    <button id="2" class="num" onclick="readNum(2)">2</button>
+                    <button id="3" class="num" onclick="readNum(3)">3</button>
+                </div>
+                <div class="row">
+                    <button id="neg" class="num" onclick="readNum('-')">(-)</button>
+                    <button id="0" class="num" onclick="readNum(0)">0</button>
+                    <button id="equals" class="num" class="oper" onclick="readEnter()">=</button>
+                </div>
+            </div>
+            <div id="operContainer">
+                <button id="add" class="oper" onclick="readOper('+')">+</button>
+                <button id="subtract" class="oper" onclick="readOper('-')">-</button>
+                <button id="multiply" class="oper" onclick="readOper('*')">x</button>
+                <button id="divide" class="oper" onclick="readOper('/')">/</button>
+            </div>
+        </div>
+    </div>
+    <!-- added display divs -->
+    <div id="outerVisual">
+        <div id="equationVisual">
+
+        </div>
+        <div id="pictureVisual">
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
