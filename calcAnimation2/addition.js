@@ -12,9 +12,10 @@ function createAddLine(numA) {
     const ctx = canvas.getContext('2d');
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
+    const lineLocation = canvasHeight*(3/4);
 
     ctx.fillStyle = 'black';
-    ctx.fillRect(0, 300, canvasWidth - 10, 3);  //creates number line
+    ctx.fillRect(0, lineLocation, canvasWidth - 10, 3);  //creates number line
     ctx.fillRect(15, 294, 3, 15);  //creates first dash on number line
 
     ctx.font = '20px Helvetica';
@@ -26,6 +27,7 @@ function animateAddition(numA, numB) {
     const ctx = canvas.getContext('2d');
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
+    const lineLocation = canvasHeight*(3/4);
     const numberA = numA;
     const numberB = numB;
 
@@ -46,7 +48,17 @@ function animateAddition(numA, numB) {
     let hundreds = Math.floor(numB/100) * 100;
     let tens = Math.floor((numB - hundreds)/10) * 10;
     let ones = numB - hundreds - tens
-    let units = 750 / ((hundreds*4/100)+(tens*2/10)+ones);
+    const units = 750 / ((hundreds*4/100)+(tens*2/10)+ones);
+    const hundredsScale = 4;
+    const tensScale = 2;
+
+    const arrowScale = 127;     //width of arrow in px, equivalent to one unit on canvas
+    const leftMarginPX = 25;    //left margin on sprite
+    const topMarginAndArrowPX = 106;   //top margin + height of arrow on sprite
+    const leftMargin = (leftMarginPX/arrowScale)*units;     //left margin scaled in terms of units
+    const topMarginAndArrow = (topMarginAndArrowPX/arrowScale)*units;  //top margin & arrow scaled in terms of units
+    const arrowWidth = (spriteWidth/arrowScale)*units;      //arrowWidth scaled in terms of units
+    const arrowHeight = (spriteHeight/arrowScale)*units;        //arrowHeight scaled in terms of units
 
     const spriteAnimations = [];
     const animationStates = [
@@ -73,7 +85,6 @@ function animateAddition(numA, numB) {
         accumulator += state.frames;
         spriteAnimations[state.name] = frames;
     });
-    console.log(spriteAnimations)
 
     // Created an array to store all pieces of image to be drawn each time animate is called
     const animationArray = [];
@@ -89,28 +100,66 @@ function animateAddition(numA, numB) {
 
         if(!(hundreds === 0 && tens === 0 && ones === 0)) {
             frameY = spriteAnimations[arrowState].loc[position].y;
-            ctx.drawImage(arrowImage, 0, frameY, spriteWidth, spriteHeight, -50 + locationDash, 300 - units*3.75 + spriteHeight*.25, units*5.6, units*4.2)
             if(hundreds != 0) {
-                if((gameFrame/staggerFrames) % totalFrames === totalFrames - 1) {
-                    animationArray.push(((frame, dashX, unit) => () => ctx.drawImage(arrowImage, 0, frame, spriteWidth, spriteHeight, -50 + dashX, 300 - units*3.75 + spriteHeight*.25, unit*5.6, unit*4.2))(frameY, locationDash, units));
-                    locationDash += units*4;
-                    locationNum += units*4;
+                ctx.drawImage(arrowImage,  //source file of sprite page
+                    0,      // X location to pull from source file
+                    frameY,   // Y location to pull from source file & also current frame
+                    spriteWidth,    
+                    spriteHeight, 
+                    locationDash - leftMargin*hundredsScale,        // canvas placement of arrow in X direction
+                    lineLocation - topMarginAndArrow*hundredsScale,     // canvas placement of arrow in Y direction
+                    arrowWidth*hundredsScale,       // canvas size of arrow width
+                    arrowHeight*hundredsScale)      // canvas size of arrow height
+                if((staggerFrames*totalFrames-1) === gameFrame%(staggerFrames*totalFrames)) {
+                    animationArray.push(((frame, dashX) => () => 
+                        ctx.drawImage(arrowImage, 0, frame, spriteWidth, spriteHeight, 
+                            dashX - leftMargin*hundredsScale,        
+                            lineLocation - topMarginAndArrow*hundredsScale,       
+                            arrowWidth*hundredsScale,                             
+                            arrowHeight*hundredsScale))                      
+                            (frameY, locationDash))                     
+                    locationDash += units*hundredsScale;
+                    locationNum += units*hundredsScale;
                     currentNum += 100;
                     animationArray.push(((dashX) => () => ctx.fillRect(dashX, 294, 3, 15))(locationDash));
                     animationArray.push(((current, numX) => () => ctx.fillText(current, numX, 328))(currentNum, locationNum));
                     hundreds -= 100;
                 }
             } else if(tens != 0) {
-                if((gameFrame/staggerFrames) % totalFrames === totalFrames - 1) {
-                    locationDash += units*2;
-                    locationNum += units*2;
+                ctx.drawImage(arrowImage, 0, frameY, spriteWidth, spriteHeight, 
+                    locationDash - leftMargin*tensScale,      
+                    lineLocation - topMarginAndArrow*tensScale,     
+                    arrowWidth*tensScale,      
+                    arrowHeight*tensScale)      
+                if((staggerFrames*totalFrames-1) === gameFrame%(staggerFrames*totalFrames)) {
+                    animationArray.push(((frame, dashX) => () => 
+                        ctx.drawImage(arrowImage, 0, frame, spriteWidth, spriteHeight, 
+                            dashX - leftMargin*tensScale,        
+                            lineLocation - topMarginAndArrow*tensScale,       
+                            arrowWidth*tensScale,                             
+                            arrowHeight*tensScale))                      
+                            (frameY, locationDash))  
+                    locationDash += units*tensScale;
+                    locationNum += units*tensScale;
                     currentNum += 10;
                     animationArray.push(((dashX) => () => ctx.fillRect(dashX, 294, 3, 15))(locationDash));
                     animationArray.push(((current, numX) => () => ctx.fillText(current, numX, 328))(currentNum, locationNum));
                     tens -= 10;
                 }
             } else if(ones != 0) {
-                if((gameFrame/staggerFrames) % totalFrames === totalFrames - 1) {
+                ctx.drawImage(arrowImage, 0, frameY, spriteWidth, spriteHeight, 
+                    locationDash - leftMargin,      
+                    lineLocation - topMarginAndArrow,     
+                    arrowWidth,      
+                    arrowHeight)   
+                if((staggerFrames*totalFrames-1) === gameFrame%(staggerFrames*totalFrames)) {
+                    animationArray.push(((frame, dashX) => () => 
+                        ctx.drawImage(arrowImage, 0, frame, spriteWidth, spriteHeight, 
+                            dashX - leftMargin,        
+                            lineLocation - topMarginAndArrow,       
+                            arrowWidth,                             
+                            arrowHeight))                      
+                            (frameY, locationDash))                    
                     locationDash += units;
                     locationNum += units;
                     currentNum += 1;
@@ -120,7 +169,6 @@ function animateAddition(numA, numB) {
                 }
             };
             gameFrame++;
-            console.log(animationArray);
             requestAnimationFrame(animate);
 
         }
