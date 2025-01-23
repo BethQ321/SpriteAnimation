@@ -16,10 +16,12 @@ function createAddLine(numA) {
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, lineLocation, canvasWidth - 10, 3);  //creates number line
-    ctx.fillRect(15, 294, 3, 15);  //creates first dash on number line
+    ctx.fillRect(20, 294, 3, 15);  //creates first dash on number line
 
     ctx.font = '20px Helvetica';
-    ctx.fillText(numA, 11, 328);  //puts numA on the number line
+    const textWidth = ctx.measureText(numA).width;
+    const centeredText = 20 - textWidth / 2;
+    ctx.fillText(numA, centeredText, 328);  //puts numA on the number line
 }
 
 function animateAddition(numA, numB) {
@@ -28,8 +30,6 @@ function animateAddition(numA, numB) {
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
     const lineLocation = canvasHeight*(3/4);
-    const numberA = numA;
-    const numberB = numB;
 
     let frameY = 0;
     let arrowState = 'rightArrow'
@@ -40,15 +40,13 @@ function animateAddition(numA, numB) {
     let gameFrame = 0;
     const staggerFrames = 10;  //a lower number gives a higher speed to the animation
 
-    let locationDash = 15;  //starting x px value of the initial dash on number line
-    let locationNum = 11; //starting x px value of the initial number on number line
-    let remainingB = numB; //keeps track of remaining amount of numB that needs to be graphed
+    let locationDash = 20;  //starting x px value of the initial dash on number line
     let currentNum = parseFloat(numA); //keeps track of current number on number line
 
     let hundreds = Math.floor(numB/100) * 100;
     let tens = Math.floor((numB - hundreds)/10) * 10;
     let ones = numB - hundreds - tens
-    const units = 750 / ((hundreds*4/100)+(tens*2/10)+ones);
+    const units = 740 / ((hundreds*4/100)+(tens*2/10)+ones);
     const hundredsScale = 4;
     const tensScale = 2;
 
@@ -119,10 +117,13 @@ function animateAddition(numA, numB) {
                             arrowHeight*hundredsScale))                      
                             (frameY, locationDash))                     
                     locationDash += units*hundredsScale;
-                    locationNum += units*hundredsScale;
                     currentNum += 100;
                     animationArray.push(((dashX) => () => ctx.fillRect(dashX, 294, 3, 15))(locationDash));
-                    animationArray.push(((current, numX) => () => ctx.fillText(current, numX, 328))(currentNum, locationNum));
+                    animationArray.push(((current, dashX) => () => {
+                        const textWidth = ctx.measureText(current).width;
+                        const centeredText = dashX - textWidth / 2;
+                        ctx.fillText(current, centeredText, 328)
+                    })(currentNum, locationDash));
                     hundreds -= 100;
                 }
             } else if(tens != 0) {
@@ -140,10 +141,13 @@ function animateAddition(numA, numB) {
                             arrowHeight*tensScale))                      
                             (frameY, locationDash))  
                     locationDash += units*tensScale;
-                    locationNum += units*tensScale;
                     currentNum += 10;
                     animationArray.push(((dashX) => () => ctx.fillRect(dashX, 294, 3, 15))(locationDash));
-                    animationArray.push(((current, numX) => () => ctx.fillText(current, numX, 328))(currentNum, locationNum));
+                    animationArray.push(((current, dashX) => () => {
+                        const textWidth = ctx.measureText(current).width;
+                        const centeredText = dashX - textWidth / 2;
+                        ctx.fillText(current, centeredText, 328)
+                    })(currentNum, locationDash));
                     tens -= 10;
                 }
             } else if(ones != 0) {
@@ -161,10 +165,13 @@ function animateAddition(numA, numB) {
                             arrowHeight))                      
                             (frameY, locationDash))                    
                     locationDash += units;
-                    locationNum += units;
                     currentNum += 1;
                     animationArray.push(((dashX) => () => ctx.fillRect(dashX, 294, 3, 15))(locationDash));
-                    animationArray.push(((current, numX) => () => ctx.fillText(current, numX, 328))(currentNum, locationNum));
+                    animationArray.push(((current, dashX) => () => {
+                        const textWidth = ctx.measureText(current).width;
+                        const centeredText = dashX - textWidth / 2;
+                        ctx.fillText(current, centeredText, 328)
+                    })(currentNum, locationDash));
                     ones--;
                 }
             };
